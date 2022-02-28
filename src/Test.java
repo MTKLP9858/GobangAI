@@ -12,12 +12,12 @@ public class Test {
 
 //      这是我想做深度搜索时候模拟一个初始的棋盘
 //        预放置棋子
-        g.setChess(5, 6);
-        g.setChess(4, 6);
-        g.setChess(5, 7);
-        g.setChess(4, 7);
-        g.setChess(5, 8);
-        g.setChess(4, 8);
+//        g.setChess(5, 6);
+//        g.setChess(4, 6);
+//        g.setChess(5, 7);
+//        g.setChess(4, 7);
+//        g.setChess(5, 8);
+//        g.setChess(4, 8);
 
 
 //        g.GobangAI(5, 3);//未完成
