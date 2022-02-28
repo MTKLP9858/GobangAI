@@ -1,5 +1,8 @@
 package Gobang;
 
+/**
+ * @author MTKLP9858
+ */
 class Chess {
     protected int mode;//0:空,1:黑,2:白
     protected int AI;//AI估值的分数

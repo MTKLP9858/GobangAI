@@ -1,14 +1,12 @@
-/* 五子棋游戏主体玩法，类
- * 棋盘采用二维数组的结构体输出
- *
- */
 package Gobang;
 
 import java.util.Arrays;
 
+/**
+ * @author MTKLP9858
+ */
 public class Gobang {
     public Chess[][] board = new Chess[15][15];//[x][y]棋盘数组
-    //private int round;//轮到哪方下棋;1:黑,2:白    //废弃
     private int black;//黑色棋子数
     private int white;//白色棋子数
     public boolean blackAI;//黑色棋子AI开关
@@ -346,8 +344,8 @@ public class Gobang {
 //                System.out.println("j=" + j + " s:" + Arrays.toString(search) + " search[j]=" + search[j] + " deep=" + deep);
             }
 
-            //获取值
-            int round = copy.getRound();
+
+            int round = copy.getRound();//获取值
             //+AI-AI+AI-AI
             if (round == 1)
             //rankingList[0][]
@@ -407,6 +405,7 @@ public class Gobang {
             case 2://白棋胜利
                 System.out.println("白棋胜利");
                 return 2;
+            default:
         }
         while (this.run(-1, -1) == 0) {
             ;
