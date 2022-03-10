@@ -293,125 +293,43 @@ public class Gobang {
         return list;
     }
 
-    //接下来这段我是懵中懵，大概设想深度搜索部分分值较高的空点，用一个新的Gobang来模拟它，从第一批点（将要放置的点）中选取最优取值的一个，预测敌方的下棋位时做减法，预测己方时做加法
-    public int GobangAI(int baseDeep, int wide) {//按照这个列表下棋，先是己方，再敌方，再递归
-        if (wide <= 0 && baseDeep <= 0) {
-            return -1;
-        }
-        int deep = 0;
-        int[] search = new int[baseDeep];
-        search[search.length - 1]--;
-        int[][][] rankingList = new int[baseDeep][wide][3];
-        rankingList[0] = getRankingListOfGobangAI(this, wide);
 
-        Gobang copy = new Gobang(this);//copy带有估值
-
-        int i = 0;
-        while (i >= 0) {
-            search[search.length - 1]++;
-            while (i < search.length && search[i] == wide - 1) {
-                i++;
-            }
-            if (i == search.length) {//遍历完了所有点
-                i = -1;
-            } else {//没遍历完继续
-                for (i = search.length - 1; i > 0; i--) {//遍历寻找需要进位的值
-                    if (search[i] >= wide) {//进位操作
-                        search[i] -= wide;
-                        search[i - 1]++;//i-1可以为0
-                        deep = i - 1;//获取最前面改动过的值的下标，为后面放置和移除棋子铺垫
-                    }
-                }
-            }
-
-
-            System.out.println(Arrays.toString(search) + " rankingList:" + Arrays.toString(rankingList[deep][search[deep]]) + " deep:" + deep);//deep==0?
-
-            for (int j = deep; j < search.length; j++) {//移除棋子
-                if (j == deep) {
-                    if (search[deep] - 1 >= 0) {
-                        copy.reSetChess(rankingList[j][search[j] - 1][0], rankingList[j][search[j] - 1][1]);
-                    }
-                } else {
-                    copy.reSetChess(rankingList[j][wide - 1][0], rankingList[j][wide - 1][1]);
-                }
-            }
-
-
-            for (int j = deep; j < search.length; j++) {//放置棋子
-                rankingList[j] = getRankingListOfGobangAI(copy, wide);//获取下一步该放置的棋子
-                copy.setChess(rankingList[j][search[j]][0], rankingList[j][search[j]][1]);
-//                System.out.println("j=" + j + " s:" + Arrays.toString(search) + " search[j]=" + search[j] + " deep=" + deep);
-            }
-
-
-            int round = copy.getRound();//获取值
-            //+AI-AI+AI-AI
-            if (round == 1)
-            //rankingList[0][]
-            {
-                ;//待续，未完成
-            }
-
-
-            if (deep == 0) {//提交值
-                System.out.println("换棋子:" + Arrays.toString(rankingList[deep][search[deep]]));
-            }
-
-//            System.out.println(Arrays.toString(search) + ";deep=" + deep);
-            deep = baseDeep - 1;
-        }
-
+    public int GobangAI(int baseDeep, int wide) {
         return 0;
     }
 
     public int run(int x, int y) {//规划函数，为了下棋怎么去下而设计的，组合和调用各类功能函数//只放一步棋，
-        if (this.getRound() == 1) {//到黑色棋走
-            if (!blackAI) {
-                if (!this.setChess(x, y)) {
-                    return -1;
+        if ((this.getRound() == 1 && !blackAI) || (this.getRound() == 2 && !whiteAI)) {//到黑色棋走
+            if (!this.setChess(x, y)) {
+                if (x == -666 || y == -666) {
+                    return 0;
                 }
-            } else {//AI接口，AI放一步黑色
-                try {
-                    x = getRankingListOfGobangAI(this, 1)[0][0];
-                    y = getRankingListOfGobangAI(this, 1)[0][1];
-                    setChess(x, y);
-                } catch (Exception ignored) {
-                }
+                return -1;
             }
-        } else if (this.getRound() == 2) {//到白色棋走
-            if (!whiteAI) {
-                if (!this.setChess(x, y)) {
-                    return -1;
-                }
-            } else {//AI接口，AI放一步白色
-                try {
-                    x = getRankingListOfGobangAI(this, 1)[0][0];
-                    y = getRankingListOfGobangAI(this, 1)[0][1];
-                    setChess(x, y);
-                } catch (Exception ignored) {
-                }
+        }
+        if ((this.getRound() == 1 && blackAI) || (this.getRound() == 2 && whiteAI)) {
+            try {
+                x = getRankingListOfGobangAI(this, 1)[0][0];
+                y = getRankingListOfGobangAI(this, 1)[0][1];
+                setChess(x, y);
+            } catch (Exception ignored) {
             }
-        } else {
-            return -1;
         }
         this.printBoard();
         switch (this.judge(x, y)) {
             case 0:
                 break;
             case 1://黑棋胜利
-                System.out.println("黑棋胜利");
+//                System.out.println("黑棋胜利");
                 return 1;
             case 2://白棋胜利
-                System.out.println("白棋胜利");
+//                System.out.println("白棋胜利");
                 return 2;
             default:
         }
-        while (this.run(-1, -1) == 0) {
-            ;
-        }
-        //让Ai下棋,这里递归进入run后，玩家部分setChess会失败，返回值为-1;这里AI下棋后（上方AI接口）应没有返回值
-        return 0;
+        this.run(-666, -666);
+        //让Ai下棋,这里递归进入run后，玩家部分setChess会失败，返回;这里AI下棋后（上方AI接口）应没有返回
+        return 666;
     }
 }
 

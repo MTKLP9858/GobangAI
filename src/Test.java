@@ -23,13 +23,10 @@ public class Test {
 //        g.GobangAI(5, 3);//未完成
 
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         g.whiteAI = true;
         while (true) {
-            try {
-                g.run(scanner.nextInt(), scanner.nextInt());//直接输入坐标玩，规则无禁手，【黑棋应该是先手】||0:空,1:黑(玩家),2:白(机器)
-            } catch (Exception ignored) {
-            }
+            int t = g.run(sc.nextInt(), sc.nextInt());//直接输入坐标玩，规则无禁手，【黑棋应该是先手】||0:空,1:黑(玩家),2:白(机器)
             System.out.println("\n");
         }
     }
