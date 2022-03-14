@@ -1,7 +1,5 @@
 package Gobang;
 
-import java.util.Arrays;
-
 /**
  * @author MTKLP9858
  */
@@ -293,22 +291,39 @@ public class Gobang {
         return list;
     }
 
+    public int[] GobangAI(Gobang gobang) {
+        int wide = 5;
+        int deep = 3;
+        int[][] search = new int[wide][3];//获取权重得到的列表
+        search = getRankingListOfGobangAI(gobang, wide);//获取权重操作
 
-    public int GobangAI(Gobang gobang, int deep, int wide, int player) {
-        Gobang go = new Gobang(gobang);
+        int[] point = new int[2];//x,y
         int max = 0;
-        int search[][] = new int[wide][3];//???
+        for (int i = 0; i < search.length; i++) {
+            gobang.setChess(search[i][0], search[i][1]);
+            if (deepSearch(gobang, deep, wide, false) > max) {
+                point[0] = search[i][0];
+                point[1] = search[i][1];
+            }
+            gobang.reSetChess(search[i][0], search[i][1]);
+        }
+        return point;
+    }
+
+    public int deepSearch(Gobang gobang, int deep, int wide, boolean playerRound) {
+        Gobang go = new Gobang(gobang);//复制一份
+        int max = 0;
+        int[][] search = new int[wide][3];//获取权重得到的列表
+        search = getRankingListOfGobangAI(go, wide);//获取权重操作
         if (deep > 0) {
-            for (int i = 0; i < search.length; i++) {
-                go.setChess(search[i][0], search[i][1]);
-
-                if (player == 1) {
-
-                } else if (player == 2) {
-
+            for (int i = 0; i < search.length; i++) {//遍历权重表
+                go.setChess(search[i][0], search[i][1]);//模拟放置一个棋子
+                int temp = 0;
+                if (playerRound) {
+                    temp += deepSearch(go, wide, deep, false);//???
+                } else {
+                    temp -= deepSearch(go, wide, deep, true);//???
                 }
-
-                int temp = GobangAI(go, wide, deep, player * (-1));//???
                 if (temp > max) {
                     max = temp;
                 }
