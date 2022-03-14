@@ -317,13 +317,9 @@ public class Gobang {
         }
         this.printBoard();
         switch (this.judge(x, y)) {
-            case 0:
-                break;
             case 1://黑棋胜利
-//                System.out.println("黑棋胜利");
                 return 1;
             case 2://白棋胜利
-//                System.out.println("白棋胜利");
                 return 2;
             default:
         }
