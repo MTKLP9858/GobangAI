@@ -26,8 +26,22 @@ public class Test {
         Scanner sc = new Scanner(System.in);
         g.whiteAI = true;
         while (true) {
-            int t = g.run(sc.nextInt(), sc.nextInt());//直接输入坐标玩，规则无禁手，【黑棋应该是先手】||0:空,1:黑(玩家),2:白(机器)
-            System.out.println("\n");
+            int runtime = g.run(sc.nextInt(), sc.nextInt());//直接输入坐标玩，规则无禁手，【黑棋应该是先手】||0:空,1:黑(玩家),2:白(机器)
+            switch (runtime) {
+                case -1:
+                    System.out.println("非法的输入");
+                    break;
+                case 0:
+                    System.out.println("继续");
+                    break;
+                case 1://黑棋胜利
+                    System.out.println("黑棋胜利");
+                    return;
+                case 2://白棋胜利
+                    System.out.println("白棋胜利");
+                    return;
+                default:
+            }
         }
     }
 }
