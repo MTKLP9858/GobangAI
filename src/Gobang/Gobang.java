@@ -325,7 +325,7 @@ public class Gobang {
         }
         this.run(-666, -666);
         //让Ai下棋,这里递归进入run后，玩家部分setChess会失败，返回;这里AI下棋后（上方AI接口）应没有返回
-        return 666;
+        return 0;
     }
 }
 
