@@ -294,8 +294,28 @@ public class Gobang {
     }
 
 
-    public int GobangAI(int baseDeep, int wide) {
-        return 0;
+    public int GobangAI(Gobang gobang, int deep, int wide, int player) {
+        Gobang go = new Gobang(gobang);
+        int max = 0;
+        int search[][] = new int[wide][3];//???
+        if (deep > 0) {
+            for (int i = 0; i < search.length; i++) {
+                go.setChess(search[i][0], search[i][1]);
+
+                if (player == 1) {
+
+                } else if (player == 2) {
+
+                }
+
+                int temp = GobangAI(go, wide, deep, player * (-1));//???
+                if (temp > max) {
+                    max = temp;
+                }
+                go.reSetChess(search[i][0], search[i][1]);
+            }
+        }
+        return search[0][2] + max;
     }
 
     public int run(int x, int y) {//规划函数，为了下棋怎么去下而设计的，组合和调用各类功能函数//只放一步棋，
