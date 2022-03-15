@@ -1,5 +1,7 @@
 package Gobang;
 
+import java.util.Arrays;
+
 /**
  * @author MTKLP9858
  */
@@ -9,6 +11,7 @@ public class Gobang {
     private int white;//白色棋子数
     public boolean blackAI;//黑色棋子AI开关
     public boolean whiteAI;//白色棋子AI开关
+    private int deepSearchMax;
 
     public Gobang() {
         for (int i = 0; i < 15; i++) {
@@ -291,45 +294,47 @@ public class Gobang {
         return list;
     }
 
-    public int[] GobangAI(Gobang gobang) {
-        int wide = 5;
-        int deep = 3;
+    public int[] GobangAI(int wide, int deep) {
         int[][] search = new int[wide][3];//获取权重得到的列表
-        search = getRankingListOfGobangAI(gobang, wide);//获取权重操作
+        search = getRankingListOfGobangAI(this, wide);//获取权重操作
 
         int[] point = new int[2];//x,y
-        int max = 0;
+        int max = 0;//gaiweiquanju?
         for (int i = 0; i < search.length; i++) {
-            gobang.setChess(search[i][0], search[i][1]);
-            if (deepSearch(gobang, deep, wide, false) > max) {
+            this.setChess(search[i][0], search[i][1]);
+            if (deepSearch(this, deep, wide, false) > max) {
                 point[0] = search[i][0];
                 point[1] = search[i][1];
             }
-            gobang.reSetChess(search[i][0], search[i][1]);
+            this.reSetChess(search[i][0], search[i][1]);
         }
         return point;
     }
 
     public int deepSearch(Gobang gobang, int deep, int wide, boolean playerRound) {
         Gobang go = new Gobang(gobang);//复制一份
+        int[][] search = this.getRankingListOfGobangAI(go, wide);//获取权重操作
+//        System.out.println(Arrays.deepToString(search) + " deep:" + deep + " " + playerRound);
         int max = 0;
-        int[][] search = new int[wide][3];//获取权重得到的列表
-        search = getRankingListOfGobangAI(go, wide);//获取权重操作
         if (deep > 0) {
-            for (int i = 0; i < search.length; i++) {//遍历权重表
+            for (int i = 0; i < wide; i++) {//遍历权重表
                 go.setChess(search[i][0], search[i][1]);//模拟放置一个棋子
                 int temp = 0;
                 if (playerRound) {
-                    temp += deepSearch(go, wide, deep, false);//???
+                    temp += deepSearch(go, deep - 1, wide, false);//???
+                    if (temp > max) {
+                        max = temp;
+                    }
                 } else {
-                    temp -= deepSearch(go, wide, deep, true);//???
-                }
-                if (temp > max) {
-                    max = temp;
+                    temp -= deepSearch(go, deep - 1, wide, true);//???
+                    if (temp < max) {
+                        max = temp;
+                    }
                 }
                 go.reSetChess(search[i][0], search[i][1]);
             }
         }
+        System.out.println("max:" + (max + search[0][2]) + " deep:" + deep);
         return search[0][2] + max;
     }
 
