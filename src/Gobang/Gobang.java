@@ -295,18 +295,19 @@ public class Gobang {
     }
 
     public int[] GobangAI(int wide, int deep) {
+        Gobang go = new Gobang(this);//复制一份
         int[][] search = new int[wide][3];//获取权重得到的列表
-        search = getRankingListOfGobangAI(this, wide);//获取权重操作
+        search = getRankingListOfGobangAI(go, wide);//获取权重操作
 
         int[] point = new int[2];//x,y
         int max = 0;//gaiweiquanju?
         for (int i = 0; i < search.length; i++) {
-            this.setChess(search[i][0], search[i][1]);
-            if (deepSearch(this, deep, wide, false) > max) {
+            go.setChess(search[i][0], search[i][1]);
+            if (deepSearch(go, deep, wide, false) > max) {
                 point[0] = search[i][0];
                 point[1] = search[i][1];
             }
-            this.reSetChess(search[i][0], search[i][1]);
+            go.reSetChess(search[i][0], search[i][1]);
         }
         return point;
     }
@@ -334,7 +335,8 @@ public class Gobang {
                 go.reSetChess(search[i][0], search[i][1]);
             }
         }
-        System.out.println("max:" + (max + search[0][2]) + " deep:" + deep);
+        //go.printBoard();
+        System.out.println("max:" + max + " search[0][2]:" + search[0][2] + " deep:" + deep + " pR:" + playerRound);
         return search[0][2] + max;
     }
 

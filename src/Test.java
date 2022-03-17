@@ -24,7 +24,7 @@ public class Test {
 
 //        int[][] m = g.getRankingListOfGobangAI(g,6);
 //        System.out.println("end:" + Arrays.deepToString(m));
-        int m = g.deepSearch(g, 4, 5, false);//未完成
+        int m = g.deepSearch(g, 10, 2, false);//未完成
         System.out.println("end:" + m);
 
 
